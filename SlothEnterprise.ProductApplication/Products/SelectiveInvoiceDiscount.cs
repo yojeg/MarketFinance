@@ -3,14 +3,14 @@
     public class SelectiveInvoiceDiscount : IProduct
     {
         /// <summary>
-        ///     Proposed networth of the Invoice
+        /// Proposed networth of the Invoice
         /// </summary>
         public decimal InvoiceAmount { get; set; }
 
         /// <summary>
-        ///     Percentage of the networth agreed and advanced to seller
+        /// Percentage of the networth agreed and advanced to seller
         /// </summary>
-        public decimal AdvancePercentage { get; set; } = 0.80M;
+        public decimal AdvancePercentage { get; set; } = AdvanceRate.Default;
 
         /// <summary>
         /// Selective invoice discount identifier
