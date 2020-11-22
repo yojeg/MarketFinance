@@ -10,10 +10,6 @@ namespace SlothEnterprise.ProductApplication.Tests
 {
     public class ProductApplicationTests
     {
-        private readonly Mock<ISelectInvoiceService> _selectInvoiceServiceMock;
-        private Mock<IBusinessLoansService> _businessLoansServiceMock;
-        private Mock<IConfidentialInvoiceService> _confidentialInvoiceServiceMock;
-
         public ProductApplicationTests()
         {
             _selectInvoiceServiceMock = new Mock<ISelectInvoiceService>();
@@ -21,20 +17,29 @@ namespace SlothEnterprise.ProductApplication.Tests
             _confidentialInvoiceServiceMock = new Mock<IConfidentialInvoiceService>();
         }
 
-        [Fact]
-        public void ProductApplicationService_ShouldSubmitApplication_ToSelectInvoiceService()
-        {
-            var productApplicationService = new ProductApplicationService(_selectInvoiceServiceMock.Object, null, null);
+        private readonly Mock<ISelectInvoiceService> _selectInvoiceServiceMock;
+        private readonly Mock<IBusinessLoansService> _businessLoansServiceMock;
+        private readonly Mock<IConfidentialInvoiceService> _confidentialInvoiceServiceMock;
 
-            productApplicationService.SubmitApplicationFor(new SellerApplication()
+        [Fact]
+        public void ProductApplicationService_ShouldSubmitApplication_ForConfidentialInvoiceDiscountService()
+        {
+            _confidentialInvoiceServiceMock.Setup(x => x.SubmitApplicationFor(It.IsAny<CompanyDataRequest>(), It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<decimal>())).Returns(() =>
             {
-                Product = new SelectiveInvoiceDiscount(),
-                CompanyData = new SellerCompanyData()
-                {
-                }
+                var result = new Mock<IApplicationResult>();
+
+                return result.Object;
             });
 
-            _selectInvoiceServiceMock.Verify(x => x.SubmitApplicationFor(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<decimal>()), Times.Once);
+            var productApplicationService = new ProductApplicationService(null, _confidentialInvoiceServiceMock.Object, null);
+
+            productApplicationService.SubmitApplicationFor(new SellerApplication
+            {
+                Product = new ConfidentialInvoiceDiscount(),
+                CompanyData = new SellerCompanyData()
+            });
+
+            _confidentialInvoiceServiceMock.Verify(x => x.SubmitApplicationFor(It.IsAny<CompanyDataRequest>(), It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<decimal>()), Times.Once);
         }
 
         [Fact]
@@ -49,38 +54,27 @@ namespace SlothEnterprise.ProductApplication.Tests
 
             var productApplicationService = new ProductApplicationService(null, null, _businessLoansServiceMock.Object);
 
-            productApplicationService.SubmitApplicationFor(new SellerApplication()
+            productApplicationService.SubmitApplicationFor(new SellerApplication
             {
                 Product = new BusinessLoans(),
                 CompanyData = new SellerCompanyData()
-                {
-                }
             });
 
             _businessLoansServiceMock.Verify(x => x.SubmitApplicationFor(It.IsAny<CompanyDataRequest>(), It.IsAny<LoansRequest>()), Times.Once);
         }
 
         [Fact]
-        public void ProductApplicationService_ShouldSubmitApplication_ForConfidentialInvoiceDiscountService()
+        public void ProductApplicationService_ShouldSubmitApplication_ToSelectInvoiceService()
         {
-            _confidentialInvoiceServiceMock.Setup(x => x.SubmitApplicationFor(It.IsAny<CompanyDataRequest>(), It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<decimal>())).Returns(() =>
+            var productApplicationService = new ProductApplicationService(_selectInvoiceServiceMock.Object, null, null);
+
+            productApplicationService.SubmitApplicationFor(new SellerApplication
             {
-                var result = new Mock<IApplicationResult>();
-
-                return result.Object;
-            });
-
-            var productApplicationService = new ProductApplicationService(null, _confidentialInvoiceServiceMock.Object, null);
-
-            productApplicationService.SubmitApplicationFor(new SellerApplication()
-            {
-                Product = new ConfidentialInvoiceDiscount(),
+                Product = new SelectiveInvoiceDiscount(),
                 CompanyData = new SellerCompanyData()
-                {
-                }
             });
 
-            _confidentialInvoiceServiceMock.Verify(x => x.SubmitApplicationFor(It.IsAny<CompanyDataRequest>(), It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<decimal>()), Times.Once);
+            _selectInvoiceServiceMock.Verify(x => x.SubmitApplicationFor(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<decimal>()), Times.Once);
         }
 
         [Fact]
@@ -88,12 +82,10 @@ namespace SlothEnterprise.ProductApplication.Tests
         {
             var productApplicationService = new ProductApplicationService(null, null, null);
 
-            Assert.Throws<InvalidOperationException>(() => productApplicationService.SubmitApplicationFor(new SellerApplication()
+            Assert.Throws<InvalidOperationException>(() => productApplicationService.SubmitApplicationFor(new SellerApplication
             {
                 Product = null,
                 CompanyData = new SellerCompanyData()
-                {
-                }
             }));
         }
     }

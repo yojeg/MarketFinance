@@ -3,7 +3,7 @@
     public interface IProduct
     {
         /// <summary>
-        /// Product identifier
+        ///     Product identifier
         /// </summary>
         int Id { get; }
     }
