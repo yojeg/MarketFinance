@@ -1,5 +1,4 @@
-﻿using System;
-using SlothEnterprise.External;
+﻿using SlothEnterprise.External;
 using SlothEnterprise.External.V1;
 using SlothEnterprise.ProductApplication.Applications;
 using SlothEnterprise.ProductApplication.Products;
@@ -22,7 +21,7 @@ namespace SlothEnterprise.ProductApplication
         }
 
         /// <summary>
-        /// 
+        ///     Submit a select invoice discount application
         /// </summary>
         /// <param name="application"></param>
         /// <returns></returns>
@@ -32,7 +31,7 @@ namespace SlothEnterprise.ProductApplication
         }
 
         /// <summary>
-        /// 
+        ///     Submit a confidential invoice discount application
         /// </summary>
         /// <param name="application"></param>
         /// <returns></returns>
@@ -51,7 +50,7 @@ namespace SlothEnterprise.ProductApplication
         }
 
         /// <summary>
-        /// 
+        ///     Submit a business loan application
         /// </summary>
         /// <param name="application"></param>
         /// <returns></returns>
