@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System;
+using Moq;
 using SlothEnterprise.External;
 using SlothEnterprise.External.V1;
 using SlothEnterprise.ProductApplication.Applications;
@@ -59,5 +60,27 @@ namespace SlothEnterprise.ProductApplication.Tests
             _businessLoansServiceMock.Verify(x => x.SubmitApplicationFor(It.IsAny<CompanyDataRequest>(), It.IsAny<LoansRequest>()), Times.Once);
         }
 
+        [Fact]
+        public void ProductApplicationService_ShouldSubmitApplication_ForConfidentialInvoiceDiscountService()
+        {
+            _confidentialInvoiceServiceMock.Setup(x => x.SubmitApplicationFor(It.IsAny<CompanyDataRequest>(), It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<decimal>())).Returns(() =>
+            {
+                var result = new Mock<IApplicationResult>();
+
+                return result.Object;
+            });
+
+            var productApplicationService = new ProductApplicationService(null, _confidentialInvoiceServiceMock.Object, null);
+
+            productApplicationService.SubmitApplicationFor(new SellerApplication()
+            {
+                Product = new ConfidentialInvoiceDiscount(),
+                CompanyData = new SellerCompanyData()
+                {
+                }
+            });
+
+            _confidentialInvoiceServiceMock.Verify(x => x.SubmitApplicationFor(It.IsAny<CompanyDataRequest>(), It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<decimal>()), Times.Once);
+        }
     }
 }
