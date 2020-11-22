@@ -82,5 +82,19 @@ namespace SlothEnterprise.ProductApplication.Tests
 
             _confidentialInvoiceServiceMock.Verify(x => x.SubmitApplicationFor(It.IsAny<CompanyDataRequest>(), It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<decimal>()), Times.Once);
         }
+
+        [Fact]
+        public void ProductApplicationService_ThrowsInvalidOperationException_ForIncorrectProduct()
+        {
+            var productApplicationService = new ProductApplicationService(null, null, null);
+
+            Assert.Throws<InvalidOperationException>(() => productApplicationService.SubmitApplicationFor(new SellerApplication()
+            {
+                Product = null,
+                CompanyData = new SellerCompanyData()
+                {
+                }
+            }));
+        }
     }
 }
