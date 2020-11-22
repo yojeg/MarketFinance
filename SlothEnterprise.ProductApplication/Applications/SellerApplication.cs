@@ -2,12 +2,12 @@
 
 namespace SlothEnterprise.ProductApplication.Applications
 {
-    public interface ISellerApplication
+    public interface ISellerApplication<TProduct> where TProduct: IProduct
     {
         /// <summary>
         ///     Product : Selective invoice discount, business loan, etc.
         /// </summary>
-        IProduct Product { get; set; }
+        TProduct Product { get; set; }
 
         /// <summary>
         ///     Seller company data
@@ -15,12 +15,12 @@ namespace SlothEnterprise.ProductApplication.Applications
         ISellerCompanyData CompanyData { get; set; }
     }
 
-    public class SellerApplication : ISellerApplication
+    public class SellerApplication<TProduct> : ISellerApplication<TProduct> where TProduct: IProduct
     {
         /// <summary>
         ///     Product : Selective invoice discount, business loan, etc.
         /// </summary>
-        public IProduct Product { get; set; }
+        public TProduct Product { get; set; }
 
         /// <summary>
         ///     Seller company data

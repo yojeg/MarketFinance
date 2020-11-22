@@ -19,7 +19,7 @@ namespace SlothEnterprise.ProductApplication
             _businessLoansService = businessLoansService;
         }
 
-        public int SubmitApplicationFor(ISellerApplication application)
+        public int SubmitApplicationFor<TProduct>(ISellerApplication<TProduct> application) where TProduct : IProduct
         {
             if (application.Product is SelectiveInvoiceDiscount sid)
             {

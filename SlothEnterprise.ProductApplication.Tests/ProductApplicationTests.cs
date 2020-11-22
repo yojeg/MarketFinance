@@ -33,7 +33,7 @@ namespace SlothEnterprise.ProductApplication.Tests
 
             var productApplicationService = new ProductApplicationService(null, _confidentialInvoiceServiceMock.Object, null);
 
-            productApplicationService.SubmitApplicationFor(new SellerApplication
+            productApplicationService.SubmitApplicationFor(new SellerApplication<ConfidentialInvoiceDiscount>
             {
                 Product = new ConfidentialInvoiceDiscount(),
                 CompanyData = new SellerCompanyData()
@@ -54,7 +54,7 @@ namespace SlothEnterprise.ProductApplication.Tests
 
             var productApplicationService = new ProductApplicationService(null, null, _businessLoansServiceMock.Object);
 
-            productApplicationService.SubmitApplicationFor(new SellerApplication
+            productApplicationService.SubmitApplicationFor(new SellerApplication<BusinessLoans>
             {
                 Product = new BusinessLoans(),
                 CompanyData = new SellerCompanyData()
@@ -68,7 +68,7 @@ namespace SlothEnterprise.ProductApplication.Tests
         {
             var productApplicationService = new ProductApplicationService(_selectInvoiceServiceMock.Object, null, null);
 
-            productApplicationService.SubmitApplicationFor(new SellerApplication
+            productApplicationService.SubmitApplicationFor(new SellerApplication<SelectiveInvoiceDiscount>
             {
                 Product = new SelectiveInvoiceDiscount(),
                 CompanyData = new SellerCompanyData()
@@ -82,7 +82,7 @@ namespace SlothEnterprise.ProductApplication.Tests
         {
             var productApplicationService = new ProductApplicationService(null, null, null);
 
-            Assert.Throws<InvalidOperationException>(() => productApplicationService.SubmitApplicationFor(new SellerApplication
+            Assert.Throws<InvalidOperationException>(() => productApplicationService.SubmitApplicationFor(new SellerApplication<SelectiveInvoiceDiscount>
             {
                 Product = null,
                 CompanyData = new SellerCompanyData()
