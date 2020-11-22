@@ -8,6 +8,8 @@ namespace SlothEnterprise.ProductApplication
 {
     public class ProductApplicationService
     {
+        private const int InvalidResult = -1;
+
         private readonly IBusinessLoansService _businessLoansService;
         private readonly IConfidentialInvoiceService _confidentialInvoiceWebService;
         private readonly ISelectInvoiceService _selectInvoiceService;
@@ -19,11 +21,21 @@ namespace SlothEnterprise.ProductApplication
             _businessLoansService = businessLoansService;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="application"></param>
+        /// <returns></returns>
         public int SubmitApplicationFor(ISellerApplication<SelectiveInvoiceDiscount> application)
         {
             return _selectInvoiceService.SubmitApplicationFor(application.CompanyData.Number.ToString(), application.Product.InvoiceAmount, application.Product.AdvancePercentage);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="application"></param>
+        /// <returns></returns>
         public int SubmitApplicationFor(ISellerApplication<ConfidentialInvoiceDiscount> application)
         {
             var result = _confidentialInvoiceWebService.SubmitApplicationFor(
@@ -35,9 +47,14 @@ namespace SlothEnterprise.ProductApplication
                     DirectorName = application.CompanyData.DirectorName
                 }, application.Product.TotalLedgerNetworth, application.Product.AdvancePercentage, application.Product.VatRate);
 
-            return result.Success ? result.ApplicationId ?? -1 : -1;
+            return result.Success ? result.ApplicationId ?? InvalidResult : InvalidResult;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="application"></param>
+        /// <returns></returns>
         public int SubmitApplicationFor(ISellerApplication<BusinessLoan> application)
         {
             var result = _businessLoansService.SubmitApplicationFor(new CompanyDataRequest
@@ -52,7 +69,7 @@ namespace SlothEnterprise.ProductApplication
                 LoanAmount = application.Product.LoanAmount
             });
 
-            return result.Success ? result.ApplicationId ?? -1 : -1;
+            return result.Success ? result.ApplicationId ?? InvalidResult : InvalidResult;
         }
     }
 }
