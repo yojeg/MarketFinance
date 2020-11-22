@@ -19,45 +19,40 @@ namespace SlothEnterprise.ProductApplication
             _businessLoansService = businessLoansService;
         }
 
-        public int SubmitApplicationFor<TProduct>(ISellerApplication<TProduct> application) where TProduct : IProduct
+        public int SubmitApplicationFor(ISellerApplication<SelectiveInvoiceDiscount> application)
         {
-            if (application.Product is SelectiveInvoiceDiscount sid)
-            {
-                return _selectInvoiceService.SubmitApplicationFor(application.CompanyData.Number.ToString(), sid.InvoiceAmount, sid.AdvancePercentage);
-            }
+            return _selectInvoiceService.SubmitApplicationFor(application.CompanyData.Number.ToString(), application.Product.InvoiceAmount, application.Product.AdvancePercentage);
+        }
 
-            if (application.Product is ConfidentialInvoiceDiscount cid)
-            {
-                var result = _confidentialInvoiceWebService.SubmitApplicationFor(
-                    new CompanyDataRequest
-                    {
-                        CompanyFounded = application.CompanyData.Founded,
-                        CompanyNumber = application.CompanyData.Number,
-                        CompanyName = application.CompanyData.Name,
-                        DirectorName = application.CompanyData.DirectorName
-                    }, cid.TotalLedgerNetworth, cid.AdvancePercentage, cid.VatRate);
-
-                return result.Success ? result.ApplicationId ?? -1 : -1;
-            }
-
-            if (application.Product is BusinessLoans loans)
-            {
-                var result = _businessLoansService.SubmitApplicationFor(new CompanyDataRequest
+        public int SubmitApplicationFor(ISellerApplication<ConfidentialInvoiceDiscount> application)
+        {
+            var result = _confidentialInvoiceWebService.SubmitApplicationFor(
+                new CompanyDataRequest
                 {
                     CompanyFounded = application.CompanyData.Founded,
                     CompanyNumber = application.CompanyData.Number,
                     CompanyName = application.CompanyData.Name,
                     DirectorName = application.CompanyData.DirectorName
-                }, new LoansRequest
-                {
-                    InterestRatePerAnnum = loans.InterestRatePerAnnum,
-                    LoanAmount = loans.LoanAmount
-                });
+                }, application.Product.TotalLedgerNetworth, application.Product.AdvancePercentage, application.Product.VatRate);
 
-                return result.Success ? result.ApplicationId ?? -1 : -1;
-            }
+            return result.Success ? result.ApplicationId ?? -1 : -1;
+        }
 
-            throw new InvalidOperationException();
+        public int SubmitApplicationFor(ISellerApplication<BusinessLoans> application)
+        {
+            var result = _businessLoansService.SubmitApplicationFor(new CompanyDataRequest
+            {
+                CompanyFounded = application.CompanyData.Founded,
+                CompanyNumber = application.CompanyData.Number,
+                CompanyName = application.CompanyData.Name,
+                DirectorName = application.CompanyData.DirectorName
+            }, new LoansRequest
+            {
+                InterestRatePerAnnum = application.Product.InterestRatePerAnnum,
+                LoanAmount = application.Product.LoanAmount
+            });
+
+            return result.Success ? result.ApplicationId ?? -1 : -1;
         }
     }
 }
