@@ -54,9 +54,9 @@ namespace SlothEnterprise.ProductApplication.Tests
 
             var productApplicationService = new ProductApplicationService(null, null, _businessLoansServiceMock.Object);
 
-            productApplicationService.SubmitApplicationFor(new SellerApplication<BusinessLoans>
+            productApplicationService.SubmitApplicationFor(new SellerApplication<BusinessLoan>
             {
-                Product = new BusinessLoans(),
+                Product = new BusinessLoan(),
                 CompanyData = new SellerCompanyData()
             });
 

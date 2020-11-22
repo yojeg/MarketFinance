@@ -38,7 +38,7 @@ namespace SlothEnterprise.ProductApplication
             return result.Success ? result.ApplicationId ?? -1 : -1;
         }
 
-        public int SubmitApplicationFor(ISellerApplication<BusinessLoans> application)
+        public int SubmitApplicationFor(ISellerApplication<BusinessLoan> application)
         {
             var result = _businessLoansService.SubmitApplicationFor(new CompanyDataRequest
             {
