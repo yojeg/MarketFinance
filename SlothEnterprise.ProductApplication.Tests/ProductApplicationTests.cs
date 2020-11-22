@@ -76,17 +76,5 @@ namespace SlothEnterprise.ProductApplication.Tests
 
             _selectInvoiceServiceMock.Verify(x => x.SubmitApplicationFor(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<decimal>()), Times.Once);
         }
-
-        [Fact]
-        public void ProductApplicationService_ThrowsInvalidOperationException_ForIncorrectProduct()
-        {
-            var productApplicationService = new ProductApplicationService(null, null, null);
-
-            Assert.Throws<InvalidOperationException>(() => productApplicationService.SubmitApplicationFor(new SellerApplication<SelectiveInvoiceDiscount>
-            {
-                Product = null,
-                CompanyData = new SellerCompanyData()
-            }));
-        }
-    }
+     }
 }
