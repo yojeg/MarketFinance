@@ -1,7 +1,7 @@
 ﻿namespace SlothEnterprise.External.V1
 {
     /// <summary>
-    /// Assume this is an external service. you cannot modify this interface
+    ///     Assume this is an external service. you cannot modify this interface
     /// </summary>
     public interface ISelectInvoiceService
     {

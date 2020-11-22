@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="InvoiceServiceFacade.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SlothEnterprise.External\SlothEnterprise.External.csproj" />
   </ItemGroup>
 

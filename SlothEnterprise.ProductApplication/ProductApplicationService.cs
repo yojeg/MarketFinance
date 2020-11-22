@@ -8,9 +8,9 @@ namespace SlothEnterprise.ProductApplication
 {
     public class ProductApplicationService
     {
-        private readonly ISelectInvoiceService _selectInvoiceService;
-        private readonly IConfidentialInvoiceService _confidentialInvoiceWebService;
         private readonly IBusinessLoansService _businessLoansService;
+        private readonly IConfidentialInvoiceService _confidentialInvoiceWebService;
+        private readonly ISelectInvoiceService _selectInvoiceService;
 
         public ProductApplicationService(ISelectInvoiceService selectInvoiceService, IConfidentialInvoiceService confidentialInvoiceWebService, IBusinessLoansService businessLoansService)
         {
@@ -21,7 +21,6 @@ namespace SlothEnterprise.ProductApplication
 
         public int SubmitApplicationFor(ISellerApplication application)
         {
-
             if (application.Product is SelectiveInvoiceDiscount sid)
             {
                 return _selectInvoiceService.SubmitApplicationFor(application.CompanyData.Number.ToString(), sid.InvoiceAmount, sid.AdvancePercentage);
@@ -38,7 +37,7 @@ namespace SlothEnterprise.ProductApplication
                         DirectorName = application.CompanyData.DirectorName
                     }, cid.TotalLedgerNetworth, cid.AdvancePercentage, cid.VatRate);
 
-                return (result.Success) ? result.ApplicationId ?? -1 : -1;
+                return result.Success ? result.ApplicationId ?? -1 : -1;
             }
 
             if (application.Product is BusinessLoans loans)
@@ -54,7 +53,8 @@ namespace SlothEnterprise.ProductApplication
                     InterestRatePerAnnum = loans.InterestRatePerAnnum,
                     LoanAmount = loans.LoanAmount
                 });
-                return (result.Success) ? result.ApplicationId ?? -1 : -1;
+
+                return result.Success ? result.ApplicationId ?? -1 : -1;
             }
 
             throw new InvalidOperationException();
