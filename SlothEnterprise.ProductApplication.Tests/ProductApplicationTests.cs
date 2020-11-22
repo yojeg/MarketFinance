@@ -1,4 +1,5 @@
 ﻿using Moq;
+using SlothEnterprise.External;
 using SlothEnterprise.External.V1;
 using SlothEnterprise.ProductApplication.Applications;
 using SlothEnterprise.ProductApplication.Products;
@@ -34,5 +35,29 @@ namespace SlothEnterprise.ProductApplication.Tests
 
             _selectInvoiceServiceMock.Verify(x => x.SubmitApplicationFor(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<decimal>()), Times.Once);
         }
+
+        [Fact]
+        public void ProductApplicationService_ShouldSubmitApplication_ToBusinessLoanService()
+        {
+            _businessLoansServiceMock.Setup(x => x.SubmitApplicationFor(It.IsAny<CompanyDataRequest>(), It.IsAny<LoansRequest>())).Returns(() =>
+            {
+                var result = new Mock<IApplicationResult>();
+
+                return result.Object;
+            });
+
+            var productApplicationService = new ProductApplicationService(null, null, _businessLoansServiceMock.Object);
+
+            productApplicationService.SubmitApplicationFor(new SellerApplication()
+            {
+                Product = new BusinessLoans(),
+                CompanyData = new SellerCompanyData()
+                {
+                }
+            });
+
+            _businessLoansServiceMock.Verify(x => x.SubmitApplicationFor(It.IsAny<CompanyDataRequest>(), It.IsAny<LoansRequest>()), Times.Once);
+        }
+
     }
 }
