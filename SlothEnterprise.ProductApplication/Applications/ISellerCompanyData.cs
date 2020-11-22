@@ -2,26 +2,26 @@
 
 namespace SlothEnterprise.ProductApplication.Applications
 {
-    public class SellerCompanyData : ISellerCompanyData
+    public interface ISellerCompanyData
     {
         /// <summary>
         /// Company name
         /// </summary>
-        public string Name { get; set; }
+        string Name { get; set; }
 
         /// <summary>
         /// Company number //todo: explain?
         /// </summary>
-        public int Number { get; set; }
+        int Number { get; set; }
 
         /// <summary>
         /// Company director's name
         /// </summary>
-        public string DirectorName { get; set; }
+        string DirectorName { get; set; }
 
         /// <summary>
         /// Date a company was founded
         /// </summary>
-        public DateTime Founded { get; set; }
+        DateTime Founded { get; set; }
     }
 }
