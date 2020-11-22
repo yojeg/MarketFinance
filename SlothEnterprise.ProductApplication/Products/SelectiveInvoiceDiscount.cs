@@ -12,6 +12,9 @@
         /// </summary>
         public decimal AdvancePercentage { get; set; } = 0.80M;
 
+        /// <summary>
+        /// Selective invoice discount identifier
+        /// </summary>
         public int Id { get; set; }
     }
 }

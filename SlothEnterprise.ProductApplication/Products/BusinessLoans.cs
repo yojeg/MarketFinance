@@ -12,6 +12,9 @@
         /// </summary>
         public decimal LoanAmount { get; set; }
 
+        /// <summary>
+        /// Business loan identifier
+        /// </summary>
         public int Id { get; set; }
     }
 }
